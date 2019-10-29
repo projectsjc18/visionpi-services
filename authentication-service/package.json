@@ -1,0 +1,20 @@
+{
+  "name": "visionpi-service-auth2",
+  "version": "1.0.0",
+  "description": "Security with OAuth2",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.5.7",
+    "oauth2-server": "^3.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}

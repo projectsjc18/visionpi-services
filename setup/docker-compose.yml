@@ -1,0 +1,20 @@
+version: '3.0' # specify docker-compose version
+
+# Define the services/ containers to be run
+services:
+ api-gateway: # name of the first service
+  build: ./api-gateway # specify the directory of the Dockerfile
+  ports:
+  - "8080:8080" # specify port mapping
+
+ authentication: # name of the second service
+  build: ./authentication-service # specify the directory of the Dockerfile
+  ports:
+  - "9876:9876" #specify ports mapping
+  links:
+  - database # link this service to the database service
+
+ database: # name of the third service
+  image: mongo # specify image to build container from
+  ports:
+  - "27017:27017" # specify port forwarding

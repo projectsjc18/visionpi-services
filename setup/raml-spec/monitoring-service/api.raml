@@ -1,0 +1,47 @@
+#%RAML 1.0
+title: Monitoring Service
+version: 1
+baseUri: /monitoring
+
+types:
+  Event:
+    properties:
+      event: string
+      device: string
+      status: string
+      eventDate: datetime
+
+resourceTypes:
+
+  Collection:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: Event[]
+    post:
+      body:
+        application/json:
+          type: Event
+
+  Member:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: Event
+    put:
+      body:
+        application/json:
+          type: Event
+    delete:
+     responses:
+       204:
+
+/events:
+  type: Collection
+
+  /{id}:
+    type: Member
