@@ -1,0 +1,161 @@
+version: '3'
+
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    image: api-gateway
+    container_name: api-gateway
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - AUTHENTICATION_SERVICE=$AUTHENTICATION_SERVICE
+      - USERS_SERVICE=$USERS_SERVICE
+    ports:
+      - "80:8080"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - app-network
+    command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon api-gateway/src/app.js
+  authentication-service:
+    build:
+      context: ./authentication-service
+      dockerfile: Dockerfile
+    image: authentication-service
+    container_name: authentication-service
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_HOSTNAME=db
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB_AUTH
+    ports:
+      - "9876"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - app-network
+    command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon authentication-service/src/app.js
+  monitoring-service:
+    build:
+      context: ./monitoring-service
+      dockerfile: Dockerfile
+    image: monitoring-service
+    container_name: monitoring-service
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_HOSTNAME=db
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB_MONITORING
+      - SERVICE_PORT=$MONITORING_SERVICE_PORT
+      - AUTHENTICATION_SERVICE=$AUTHENTICATION_SERVICE
+    ports:
+      - "6543"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - app-network
+    command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon monitoring-service/src/app.js
+  geolocalization-service:
+    build:
+      context: ./geolocalization-service
+      dockerfile: Dockerfile
+    image: geolocalization-service
+    container_name: geolocalization-service
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_HOSTNAME=db
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB_GEOLOCALIZATION
+      - SERVICE_PORT=$GEOLOCALIZATION_SERVICE_PORT
+      - AUTHENTICATION_SERVICE=$AUTHENTICATION_SERVICE
+    ports:
+      - "8765"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - app-network
+    command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon geolocalization-service/src/app.js
+  users-service:
+    build:
+      context: ./users-service
+      dockerfile: Dockerfile
+    image: users-service
+    container_name: users-service
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_HOSTNAME=db
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB_USERS
+      - SERVICE_PORT=$USERS_SERVICE_PORT
+      - AUTHENTICATION_SERVICE=$AUTHENTICATION_SERVICE
+    ports:
+      - "4321"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - app-network
+    command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon users-service/src/app.js
+  streaming-service:
+    build:
+      context: ./streaming-service
+      dockerfile: Dockerfile
+    image: streaming-service
+    container_name: streaming-service
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_HOSTNAME=db
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB_STREAMING
+    ports:
+      - "5678"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - app-network
+    command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon streaming-service/src/app.js
+
+  db:
+    image: mongo:4.1.8-xenial
+    container_name: db
+    restart: unless-stopped
+    env_file: setup/database/.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    ports:
+      - "27017:27017"
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:
