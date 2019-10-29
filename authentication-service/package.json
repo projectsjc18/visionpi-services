@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.5.7",
+    "mongoose": "^5.7.5",
     "oauth2-server": "^3.0.1"
   },
   "devDependencies": {
