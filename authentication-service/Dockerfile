@@ -1,8 +1,8 @@
 FROM node:10-alpine
 
-RUN mkdir -p /home/authentication_service/app/node_modules && chown -R node:node /home/authentication_service/app
+RUN mkdir -p /authentication_service/app/node_modules && chown -R node:node /authentication_service/app
 
-WORKDIR /home/authentication_service/app
+WORKDIR /authentication_service/app
 
 COPY package*.json ./
 
