@@ -1,8 +1,8 @@
 FROM node:10-alpine
 
-RUN mkdir -p /home/api_gateway/app/node_modules && chown -R node:node /home/api_gateway/app
+RUN mkdir -p /api_gateway/app/node_modules && chown -R node:node /api_gateway/app
 
-WORKDIR /home/api_gateway/app
+WORKDIR /api_gateway/app
 
 COPY package*.json ./
 
