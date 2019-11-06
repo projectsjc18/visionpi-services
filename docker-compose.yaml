@@ -15,11 +15,11 @@ services:
     ports:
       - "80:8080"
     volumes:
-      - .:/home/api_gateway/app
-      - node_modules:/home/api_gateway/app/node_modules
+      - .:/api_gateway/app
+      - node_modules:/api_gateway/app/node_modules
     networks:
       - app-network
-    command: ./wait-for.sh db:27017 -- /home/api_gateway/app/node_modules/.bin/nodemon api-gateway/src/app.js
+    command: ./wait-for.sh db:27017 -- /api_gateway/app/node_modules/.bin/nodemon api-gateway/src/app.js
   authentication-service:
     build:
       context: ./authentication-service
@@ -37,11 +37,11 @@ services:
     ports:
       - "9876"
     volumes:
-      - .:/home/authentication_service/app
-      - node_modules:/home/authentication_service/app/node_modules
+      - .:/authentication_service/app
+      - node_modules:/authentication_service/app/node_modules
     networks:
       - app-network
-    command: ./wait-for.sh db:27017 -- /home/authentication_service/app/node_modules/.bin/nodemon authentication-service/src/app.js
+    command: ./wait-for.sh db:27017 -- /authentication_service/app/node_modules/.bin/nodemon authentication-service/src/app.js
   monitoring-service:
     build:
       context: ./monitoring-service
@@ -61,11 +61,11 @@ services:
     ports:
       - "6543"
     volumes:
-      - .:/home/monitoring_service/app
-      - node_modules:/home/monitoring_service/app/node_modules
+      - .:/monitoring_service/app
+      - node_modules:/monitoring_service/app/node_modules
     networks:
       - app-network
-    command: ./wait-for.sh db:27017 -- /home/monitoring_service/app/node_modules/.bin/nodemon monitoring-service/src/app.js
+    command: ./wait-for.sh db:27017 -- /monitoring_service/app/node_modules/.bin/nodemon monitoring-service/src/app.js
   geolocalization-service:
     build:
       context: ./geolocalization-service
@@ -85,11 +85,11 @@ services:
     ports:
       - "8765"
     volumes:
-      - .:/home/geolocalization_service/app
-      - node_modules:/home/geolocalization_service/app/node_modules
+      - .:/geolocalization_service/app
+      - node_modules:/geolocalization_service/app/node_modules
     networks:
       - app-network
-    command: ./wait-for.sh db:27017 -- /home/geolocalization_service/app/node_modules/.bin/nodemon geolocalization-service/src/app.js
+    command: ./wait-for.sh db:27017 -- /geolocalization_service/app/node_modules/.bin/nodemon geolocalization-service/src/app.js
   users-service:
     build:
       context: ./users-service
@@ -109,11 +109,11 @@ services:
     ports:
       - "4321"
     volumes:
-      - .:/home/users_service/app
-      - node_modules:/home/users_service/app/node_modules
+      - .:/users_service/app
+      - node_modules:/users_service/app/node_modules
     networks:
       - app-network
-    command: ./wait-for.sh db:27017 -- /home/users_service/app/node_modules/.bin/nodemon users-service/src/app.js
+    command: ./wait-for.sh db:27017 -- /users_service/app/node_modules/.bin/nodemon users-service/src/app.js
   streaming-service:
     build:
       context: ./streaming-service
@@ -131,11 +131,11 @@ services:
     ports:
       - "5678"
     volumes:
-      - .:/home/streaming_service/app
-      - node_modules:/home/streaming_service/app/node_modules
+      - .:/streaming_service/app
+      - node_modules:/streaming_service/app/node_modules
     networks:
       - app-network
-    command: ./wait-for.sh db:27017 -- /home/streaming_service/app/node_modules/.bin/nodemon streaming-service/src/app.js
+    command: ./wait-for.sh db:27017 -- /streaming_service/app/node_modules/.bin/nodemon streaming-service/src/app.js
 
   db:
     image: mongo:4.1.8-xenial
