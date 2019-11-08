@@ -16,7 +16,7 @@ services:
       - "80:8080"
     volumes:
       - .:/api_gateway/app
-      - node_modules:/api_gateway/app/node_modules
+      - api_gateway_node_modules:/api_gateway/app/node_modules
     networks:
       - app-network
     command: ./wait-for.sh db:27017 -- /api_gateway/app/node_modules/.bin/nodemon api-gateway/src/app.js
@@ -38,7 +38,7 @@ services:
       - "9876"
     volumes:
       - .:/authentication_service/app
-      - node_modules:/authentication_service/app/node_modules
+      - authentication_node_modules:/authentication_service/app/node_modules
     networks:
       - app-network
     command: ./wait-for.sh db:27017 -- /authentication_service/app/node_modules/.bin/nodemon authentication-service/src/app.js
@@ -62,7 +62,7 @@ services:
       - "6543"
     volumes:
       - .:/monitoring_service/app
-      - node_modules:/monitoring_service/app/node_modules
+      - monitoring_node_modules:/monitoring_service/app/node_modules
     networks:
       - app-network
     command: ./wait-for.sh db:27017 -- /monitoring_service/app/node_modules/.bin/nodemon monitoring-service/src/app.js
@@ -86,7 +86,7 @@ services:
       - "8765"
     volumes:
       - .:/geolocalization_service/app
-      - node_modules:/geolocalization_service/app/node_modules
+      - geolocalization_node_modules:/geolocalization_service/app/node_modules
     networks:
       - app-network
     command: ./wait-for.sh db:27017 -- /geolocalization_service/app/node_modules/.bin/nodemon geolocalization-service/src/app.js
@@ -110,7 +110,7 @@ services:
       - "4321"
     volumes:
       - .:/users_service/app
-      - node_modules:/users_service/app/node_modules
+      - users_node_modules:/users_service/app/node_modules
     networks:
       - app-network
     command: ./wait-for.sh db:27017 -- /users_service/app/node_modules/.bin/nodemon users-service/src/app.js
@@ -132,7 +132,7 @@ services:
       - "5678"
     volumes:
       - .:/streaming_service/app
-      - node_modules:/streaming_service/app/node_modules
+      - streaming_node_modules:/streaming_service/app/node_modules
     networks:
       - app-network
     command: ./wait-for.sh db:27017 -- /streaming_service/app/node_modules/.bin/nodemon streaming-service/src/app.js
