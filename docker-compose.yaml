@@ -159,3 +159,9 @@ networks:
 volumes:
   dbdata:
   node_modules:
+  api_gateway_node_modules:
+  authentication_node_modules:
+  monitoring_node_modules:
+  geolocalization_node_modules:
+  users_node_modules:
+  streaming_node_modules:
