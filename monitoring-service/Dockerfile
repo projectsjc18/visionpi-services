@@ -4,7 +4,7 @@ RUN mkdir -p /monitoring_service/app/node_modules && chown -R node:node /monitor
 
 WORKDIR /monitoring_service/app
 
-COPY package*.json ./
+COPY package.json ./
 
 USER node
 

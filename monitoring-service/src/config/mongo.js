@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb')
 
 const getMongoURL = (options) => {
-  return `mongodb://${options.user}:${options.password}@${options.host}:${options.port_db}/${options.name}?authSource=admin`
+    return `mongodb://${options.user}:${options.password}@${options.host}:${options.port_db}/${options.name}?authSource=admin`
 }
 
 const connect = (options, mediator) => {

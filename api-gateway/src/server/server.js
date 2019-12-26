@@ -167,12 +167,12 @@ function isAuthenticated(req, res, next) {
 
     axios.get(`${authenticationService}/auth/authenticate`, config)
     .then(response => {
-      console.log(response.data.token);
+      //console.log(response.data.token);
       next()
     })
     .catch(err => {
       console.log("Error isAuthenticate");
-      console.log(err);
+      //console.log(err);
       res.send('No Authorized!');
     });
   }

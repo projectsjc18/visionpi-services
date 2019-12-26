@@ -67,6 +67,19 @@ const repository = (db, options) => {
     })
   }
 
+  const getUserByUser = (user) => {
+    console.log("By user:" + user)
+    return new Promise((resolve, reject) => {
+      const sendUser = (err, user) => {
+        if (err) {
+          reject(new Error(`An error occured fetching a user with id: ${id}, err: ${err}`))
+        }
+        resolve(user)
+      }
+      collection.findOne({username: user}, {}, sendUser)
+    })
+  }
+
   const saveUser = (user) => {
     return new Promise((resolve, reject) => {
       // Creates a new User based on the Mongoose schema and the post bo.dy
@@ -82,7 +95,8 @@ const repository = (db, options) => {
         email: user.email,
         profile: user.profile,
         created_at: generateDate()
-        //updated_at: generateDate()
+        updated_at: generateDate(),
+        platforms: loadPlatforms(user.platforms)
       }
 
       // New User is saved in the db.
@@ -91,7 +105,7 @@ const repository = (db, options) => {
           if(response != 'unsuccesful')
             resolve(aux);
         }).catch(err => {
-          reject(new Error('an error occured registring a user, err:' + err));
+          reject(new Error('an error occured registering a user, err:' + err));
         })
       })
     }
@@ -157,6 +171,35 @@ const repository = (db, options) => {
     })*/
   }
 
+  const loadPlatforms = (platforms) => {
+    var web = {};
+    var notifications = {};
+    var options = [];
+    var permissions = {};
+    platforms.web.forEach(obj => {
+        switch (obj) {
+          case 'Dashboard':
+            options.push({ "title":"dashboard", "url": "/home/dashboard/administration", "icon": "list" });
+            break;
+          case 'User':
+            options.push({ "title":"user", "url": "/home/user/administration", "icon": "person" });
+            break;
+          case 'Geolocalization':
+            options.push({ "title":"localization", "url": "/home/geolocalization/administration", "icon": "satellite" });
+            break;
+          case 'Monitoring':
+            options.push({ "title":"surveillance", "url": "/home/surveillance/administration", "icon": "videocam" });
+            break;
+          case 'Surveillance':
+            options.push({ "title":"monitoring", "url": "/home/monitoring/administration", "icon": "alarm" });
+            break;
+          default:
+
+        }
+        console.log('----------- Load Platforms Success.');
+    });
+  }
+
   const disconnect = () => {
     db.close()
   }
@@ -165,6 +208,7 @@ const repository = (db, options) => {
     getAllUsers,
     getUsersPrivileges,
     getUserById,
+    getUserByUser,
     saveUser,
     disconnect
   })

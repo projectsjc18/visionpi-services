@@ -13,7 +13,7 @@ services:
       - AUTHENTICATION_SERVICE=$AUTHENTICATION_SERVICE
       - USERS_SERVICE=$USERS_SERVICE
     ports:
-      - "80:8080"
+      - "8070"
     volumes:
       - .:/api_gateway/app
       - api_gateway_node_modules:/api_gateway/app/node_modules
@@ -35,7 +35,7 @@ services:
       - MONGO_PORT=$MONGO_PORT
       - MONGO_DB=$MONGO_DB_AUTH
     ports:
-      - "9876"
+      - 32793:9876
     volumes:
       - .:/authentication_service/app
       - authentication_node_modules:/authentication_service/app/node_modules
@@ -59,7 +59,7 @@ services:
       - SERVICE_PORT=$MONITORING_SERVICE_PORT
       - AUTHENTICATION_SERVICE=$AUTHENTICATION_SERVICE
     ports:
-      - "6543"
+      - 32795:6543
     volumes:
       - .:/monitoring_service/app
       - monitoring_node_modules:/monitoring_service/app/node_modules
@@ -107,7 +107,7 @@ services:
       - SERVICE_PORT=$USERS_SERVICE_PORT
       - AUTHENTICATION_SERVICE=$AUTHENTICATION_SERVICE
     ports:
-      - "4321"
+      - 32794:4321
     volumes:
       - .:/users_service/app
       - users_node_modules:/users_service/app/node_modules
@@ -159,3 +159,9 @@ networks:
 volumes:
   dbdata:
   node_modules:
+  api_gateway_node_modules:
+  authentication_node_modules:
+  monitoring_node_modules:
+  geolocalization_node_modules:
+  users_node_modules:
+  streaming_node_modules:
