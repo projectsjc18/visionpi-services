@@ -87,8 +87,8 @@ const repository = (db, options) => {
         userid: user.userid,
         username: user.username,
         password: bcrypt.hashSync(user.password, 10),
-        firstName: user.firstName,
-        lastName: user.lastName,
+        firstName: user.firstname,
+        lastName: user.lastname,
         gender: user.gender,
         access_token: "",
         birthday: user.birthday,
@@ -172,11 +172,12 @@ const repository = (db, options) => {
   }
 
   const loadPlatforms = (platforms) => {
-    var web = {};
     var notifications = {};
     var options = [];
     var permissions = {};
-    platforms.web.forEach(obj => {
+    console.log('-------------------platforms');
+    platforms.services.forEach(obj => {
+        console.log(obj);
         switch (obj) {
           case 'Dashboard':
             options.push({ "title":"dashboard", "url": "/home/dashboard/administration", "icon": "list" });
@@ -196,8 +197,10 @@ const repository = (db, options) => {
           default:
 
         }
-        console.log('----------- Load Platforms Success.');
+        console.log('-------------------');
     });
+    var web = {"web": {"options": options, "permissions": permissions, "notifications": notifications}};
+    return web;
   }
 
   const disconnect = () => {
