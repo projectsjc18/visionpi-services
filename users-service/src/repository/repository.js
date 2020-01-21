@@ -94,7 +94,7 @@ const repository = (db, options) => {
         birthday: user.birthday,
         email: user.email,
         profile: user.profile,
-        created_at: generateDate()
+        created_at: generateDate(),
         updated_at: generateDate(),
         platforms: loadPlatforms(user.platforms)
       }
