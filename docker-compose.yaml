@@ -83,7 +83,7 @@ services:
       - SERVICE_PORT=$GEOLOCALIZATION_SERVICE_PORT
       - AUTHENTICATION_SERVICE=$AUTHENTICATION_SERVICE
     ports:
-      - "8765"
+      - 32796:8765
     volumes:
       - .:/geolocalization_service/app
       - geolocalization_node_modules:/geolocalization_service/app/node_modules

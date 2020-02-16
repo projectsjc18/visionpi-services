@@ -4,7 +4,7 @@ RUN mkdir -p /geolocalization_service/app/node_modules && chown -R node:node /ge
 
 WORKDIR /geolocalization_service/app
 
-COPY package*.json ./
+COPY package.json ./
 
 USER node
 
