@@ -5,7 +5,7 @@ const axios = require('axios');
 
 const repository = (db, options) => {
 
-  const collection = db.db(options.name).collection('users');
+  const collection = db.db(options.name).collection(options.usersCollection);
 
   const getAllUsers = () => {
     return new Promise((resolve, reject) => {
@@ -80,22 +80,47 @@ const repository = (db, options) => {
     })
   }
 
+  const getUserByUserAccount = (user_account) => {
+    console.log("By user-account:" + user_account)
+    return new Promise((resolve, reject) => {
+      const userAccounts = []
+      const cursor = collection.find(
+        { $or: [
+            { username: new RegExp( ".*" + user_account + ".*", "i" ) },
+            { account: new RegExp( ".*" + user_account + ".*", "i" ) }
+          ]
+        }, { projection: { _id:0, account: 1, username: 1 }})
+      const addUserAccount = (userAccount) => {
+        userAccounts.push(userAccount)
+      }
+      const sendUserAccounts = (err) => {
+        if (err) {
+          reject(new Error(`An error occured fetching a user with id: ${id}, err: ${err}`))
+        }
+        resolve(userAccounts.slice())
+      }
+      cursor.forEach(addUserAccount, sendUserAccounts)
+    })
+  }
+
   const saveUser = (user) => {
     return new Promise((resolve, reject) => {
+      console.log("New user");
+      console.log(user);
       // Creates a new User based on the Mongoose schema and the post bo.dy
       const newUser = {
+        account: user.account,
         userid: user.userid,
         username: user.username,
         password: bcrypt.hashSync(user.password, 10),
-        firstName: user.firstname,
-        lastName: user.lastname,
+        firstname: user.firstname,
+        lastname: user.lastname,
         gender: user.gender,
-        access_token: "",
-        birthday: user.birthday,
+        birth: user.birth,
         email: user.email,
         profile: user.profile,
-        created_at: generateDate(),
-        updated_at: generateDate(),
+        createdAt: generateDate(),
+        updatedAt: generateDate(),
         platforms: loadPlatforms(user.platforms)
       }
 
@@ -105,7 +130,7 @@ const repository = (db, options) => {
           if(response != 'unsuccesful')
             resolve(aux);
         }).catch(err => {
-          reject(new Error('an error occured registering a user, err:' + err));
+          reject(new Error('an error occured registring a user, err:' + err));
         })
       })
     }
@@ -212,6 +237,7 @@ const repository = (db, options) => {
     getUsersPrivileges,
     getUserById,
     getUserByUser,
+    getUserByUserAccount,
     saveUser,
     disconnect
   })

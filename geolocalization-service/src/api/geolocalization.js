@@ -14,9 +14,30 @@ module.exports = (app, options) => {
   })
 
   /* Get checkpoint by Id */
-  app.get('/v1/geolocalization/checkpoints/:id', isAuthenticated, (req, res, next) => {
-    repo.getCheckpointById(req.params.id).then(checkpoint => {
+  app.get('/v1/geolocalization/checkpoints/:route', (req, res, next) => {
+    repo.getCheckpointsByRoute(req.params.route).then(checkpoint => {
       res.status(status.OK).json(checkpoint)
+    }).catch(next)
+  })
+
+  /* Get all accounts */
+  app.get('/v1/geolocalization/accounts', isAuthenticated, (req, res, next) => {
+    repo.getAccounts().then(accounts => {
+      res.status(status.OK).json(accounts)
+    }).catch(next)
+  })
+
+  /* Get all accounts */
+  app.get('/v1/geolocalization/accounts/details', isAuthenticated, (req, res, next) => {
+    repo.getAccountsDetails().then(accounts => {
+      res.status(status.OK).json(accounts)
+    }).catch(next)
+  })
+
+  /* Save new account */
+  app.post('/v1/geolocalization/accounts', isAuthenticated, (req, res, next) => {
+    repo.saveAccount(req.body).then(account => {
+      res.status(status.OK).json(account)
     }).catch(next)
   })
 
