@@ -44,7 +44,7 @@
     "dockerode": "^2.3.1",
     "express": "^4.17.1",
     "helmet": "^3.21.1",
-    "http-proxy": "^1.17.0",
+    "http-proxy": "^1.18.1",
     "http-proxy-middleware": "^0.19.1",
     "http-status": "^0.2.5",
     "mongodb": "^3.3.0",
